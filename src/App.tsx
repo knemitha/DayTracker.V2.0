@@ -1,30 +1,39 @@
 import Nav from './components/layout/nav'
+import DayLog from './pages/DayLog'
+import Calendar from './pages/Calendar'
+import Tasks from './pages/Tasks'
+import Statistics from './pages/Statistics'
+import { useEffect, useState } from 'react'
+
+type PagePath = '/' | '/tasks' | '/calendar' | '/statistics'
+
+function getPagePath(pathname: string): PagePath {
+	if (pathname === '/tasks' || pathname === '/calendar' || pathname === '/statistics') {
+		return pathname
+	}
+
+	return '/'
+}
 
 function App() {
+	const [path, setPath] = useState<PagePath>(() => getPagePath(window.location.pathname))
+
+	useEffect(() => {
+		const handlePopState = () => setPath(getPagePath(window.location.pathname))
+
+		window.addEventListener('popstate', handlePopState)
+		return () => window.removeEventListener('popstate', handlePopState)
+	}, [])
+
 	return (
-		<div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
+		<div className="min-h-screen bg-linear-to-b from-slate-50 to-slate-100 text-slate-900">
 			<Nav />
 
 			<main className="mx-auto grid w-[min(960px,calc(100%-2rem))] gap-4 px-4 py-8">
-				<section className="rounded-2xl bg-white/70 p-5 shadow-sm ring-1 ring-black/5 backdrop-blur" id="day-log">
-					<h1>Day Log</h1>
-					<p>Track what happened today.</p>
-				</section>
-
-				<section className="rounded-2xl bg-white/70 p-5 shadow-sm ring-1 ring-black/5 backdrop-blur" id="tasks">
-					<h2>Tasks</h2>
-					<p>Keep your tasks organized.</p>
-				</section>
-
-				<section className="rounded-2xl bg-white/70 p-5 shadow-sm ring-1 ring-black/5 backdrop-blur" id="calendar">
-					<h2>Calendar</h2>
-					<p>See your days at a glance.</p>
-				</section>
-
-				<section className="rounded-2xl bg-white/70 p-5 shadow-sm ring-1 ring-black/5 backdrop-blur" id="statistics">
-					<h2>Statistics</h2>
-					<p>Review your trends and progress.</p>
-				</section>
+				{path === '/' ? <DayLog /> : null}
+				{path === '/tasks' ? <Tasks /> : null}
+				{path === '/calendar' ? <Calendar /> : null}
+				{path === '/statistics' ? <Statistics /> : null}
 			</main>
 		</div>
 	)

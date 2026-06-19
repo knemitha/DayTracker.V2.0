@@ -1,8 +1,8 @@
 const sections = [
-	{ label: 'Day Log', href: '#day-log' },
-	{ label: 'Tasks', href: '#tasks' },
-	{ label: 'Calendar', href: '#calendar' },
-	{ label: 'Statistics', href: '#statistics' },
+	{ label: 'Day Log', href: '/' },
+	{ label: 'Tasks', href: '/tasks' },
+	{ label: 'Calendar', href: '/calendar' },
+	{ label: 'Statistics', href: '/statistics' },
 ]
 
 export default function Nav() {
